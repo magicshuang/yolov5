@@ -316,13 +316,13 @@ def train(hyp, opt, device, tb_writer=None, wandb=None):
                 with torch.no_grad():
                     outs, train_out = teacherModel(imgs, augment=False)  # inference and training outputs
                     feat_1_t,feat_2_t,feat_3_t = train_out
-                    loss_d_1 = compute_mask_loss(mask_1, feat_1, feat_1_t, 0.01)
-                    loss_d_2 = compute_mask_loss(mask_2, feat_2, feat_2_t, 0.01)
-                    loss_d_3 = compute_mask_loss(mask_3, feat_3, feat_3_t, 0.01)
+                    loss_d_1 = compute_mask_loss(mask_1, feat_1, feat_1_t, opt.distill_ratio)
+                    loss_d_2 = compute_mask_loss(mask_2, feat_2, feat_2_t, opt.distill_ratio)
+                    loss_d_3 = compute_mask_loss(mask_3, feat_3, feat_3_t, opt.distill_ratio)
                     loss_d = loss_d_1 +loss_d_2+loss_d_3
 
             
-                loss *= 0.8
+                
                 loss += loss_d
                 loss_items += torch.cat((torch.Tensor([0]).cuda(), torch.Tensor([0]).cuda(), torch.Tensor([0]).cuda(), loss_d.unsqueeze(0), loss_d.unsqueeze(0)))
 
@@ -475,11 +475,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--teacher-weights', type=str, default='./runs/train/yours/weights/best.pt',
                         help='initial weights path')  
-    parser.add_argument('--distill-ratio', type=float, default=1.0,
+    parser.add_argument('--distill-ratio', type=float, default=0.01,
                         help='alpha')
     parser.add_argument('--weights',    type=str,   default='./weights/yolov5s.pt ',               help='initial weights path')
-    parser.add_argument('--cfg',        type=str,   default='yolov5s_hat.yaml',                         help='model.yaml path')
-    parser.add_argument('--data',       type=str,   default='data/coco_safehat.yaml',        help='data.yaml path')
+    parser.add_argument('--cfg',        type=str,   default='yolov5s.yaml',                         help='model.yaml path')
+    parser.add_argument('--data',       type=str,   default='data/coco.yaml',        help='data.yaml path')
     parser.add_argument('--hyp',        type=str,   default='data/hyp.scratch.yaml',    help='hyperparameters path')
     parser.add_argument('--epochs',     type=int,   default=380)
     parser.add_argument('--batch-size', type=int,   default=6,                         help='total batch size for all GPUs')
