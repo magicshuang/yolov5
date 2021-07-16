@@ -1,4 +1,4 @@
-# 模型压缩全家桶之知识蒸馏
+# yolov5 知识蒸馏
 ## <div align="center"> 介绍</div>
 
 yolov5-l模型压缩至yolov5-s
