@@ -135,7 +135,7 @@ def make_gt_boxes(gt_boxes,max_num_box,batch,imgsize):
         new_gt_boxes.append(gt_boxes_padding.unsqueeze(0))
     new_gt_boxes = torch.cat(new_gt_boxes)
     # x_c,y_c to x1y1x2y2
-    new_gt_boxes_aim = new_gt_boxes
+    new_gt_boxes_aim = torch.zeros(size=new_gt_boxes.size())
     new_gt_boxes_aim[:, :, 2] = (new_gt_boxes[:, :, 2] - 0.5 * new_gt_boxes[:,:,4] )* imgsize[1]
     new_gt_boxes_aim[:, :, 3] = (new_gt_boxes[:, :, 3] - 0.5 * new_gt_boxes[:, :, 5])* imgsize[0]
     new_gt_boxes_aim[:, :, 4] = (new_gt_boxes[:, :, 2] + 0.5 * new_gt_boxes[:, :, 4])* imgsize[1]
