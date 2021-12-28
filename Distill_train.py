@@ -239,8 +239,8 @@ def train(hyp, opt, device, tb_writer=None, wandb=None):
     scheduler.last_epoch = start_epoch - 1  # do not move
     scaler = amp.GradScaler(enabled=cuda)
     compute_loss = ComputeLoss(model)  # init loss class
-    compute_distill_loss = ComputeOutbasedDstillLoss(
-        2, distill_ratio=opt.distill_ratio)
+    #compute_distill_loss = ComputeOutbasedDstillLoss(
+    #    2, distill_ratio=opt.distill_ratio)
     logger.info(f'Image sizes {imgsz} train, {imgsz_test} test\n'
                 f'Using {dataloader.num_workers} dataloader workers\n'
                 f'Logging results to {save_dir}\n'
